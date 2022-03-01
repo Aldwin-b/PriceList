@@ -1,5 +1,5 @@
-import { StatusBar } from "expo-status-bar";
 import React, { version } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,16 +8,17 @@ import {
   Alert,
   ImageBackground,
   Image,
+  Button,
+  ScrollView,
 } from "react-native";
 import { Camera, Constants } from "expo-camera";
+import Input from "./components/Input";
 let camera: Camera;
 export default function App() {
   const [startCamera, setStartCamera] = React.useState(false);
   const [previewVisible, setPreviewVisible] = React.useState(false);
   const [capturedImage, setCapturedImage] = React.useState<any>(null);
-  var [cameraType, setCameraType] = React.useState(
-    Camera.Constants.Type.back
-  );
+  var [cameraType, setCameraType] = React.useState(Camera.Constants.Type.back);
   const [flashMode, setFlashMode] = React.useState("off");
 
   const __startCamera = async () => {
@@ -30,7 +31,7 @@ export default function App() {
     }
   };
 
-  const __stopCamera = async () =>{
+  const __stopCamera = async () => {
     setStartCamera(false);
   };
 
@@ -41,8 +42,7 @@ export default function App() {
     //setStartCamera(false)
     setCapturedImage(photo);
   };
-  const __savePhoto = () => {
-  };
+  const __savePhoto = () => {};
   const __retakePicture = () => {
     setCapturedImage(null);
     setPreviewVisible(false);
@@ -63,6 +63,27 @@ export default function App() {
     } else {
       setCameraType(Camera.Constants.Type.back);
     }
+  };
+  const [serviceList, setServiceList] = useState([{ service: "" }]);
+
+  const handleServiceChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const { name, value } = e.target;
+    const list = [...serviceList];
+    list[index][name] = value;
+    setServiceList(list);
+  };
+
+  const handleServiceRemove = (index: number) => {
+    const list = [...serviceList];
+    list.splice(index, 1);
+    setServiceList(list);
+  };
+
+  const handleServiceAdd = () => {
+    setServiceList([...serviceList, { service: "" }]);
   };
   return (
     <View style={styles.container}>
@@ -89,81 +110,77 @@ export default function App() {
             >
               <View
                 style={{
-                  top:"7%",
-                  flexDirection : "row",           
-                  justifyContent : "space-around",
-
+                  top: "7%",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
                 }}
               >
-
-                  <TouchableOpacity
-                    onPress={__handleFlashMode}
+                <TouchableOpacity
+                  onPress={__handleFlashMode}
+                  style={{
+                    backgroundColor: flashMode === "off" ? "#000" : "#fff",
+                    alignItems: "center",
+                    borderRadius: 7,
+                    height: 65,
+                    width: 65,
+                  }}
+                >
+                  <Text
                     style={{
-                      backgroundColor: flashMode === "off" ? "#000" : "#fff",
-                      alignItems : "center",
-                      borderRadius: 7,
-                      height: 65,
-                      width: 65,
+                      fontSize: 40,
                     }}
                   >
-                    <Text
-                      style={{
-                        fontSize: 40,
-                      }}
-                    >
-                      ⚡️
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={__stopCamera}
+                    ⚡️
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={__stopCamera}
+                  style={{
+                    backgroundColor: "#000",
+                    borderRadius: 7,
+                    height: 65,
+                    width: 65,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
                     style={{
-                      backgroundColor: "#000",
-                      borderRadius: 7,
-                      height: 65,
-                      width: 65,
-                      alignItems :"center",
-                      justifyContent:"center",
-
+                      fontSize: 45,
+                      color: "red",
                     }}
                   >
-                    <Text
-                      style={{
-                        fontSize: 45,
-                        color :"red",
-                      }}
-                    >
-                      X
-                    </Text>
-                  </TouchableOpacity>
+                    X
+                  </Text>
+                </TouchableOpacity>
               </View>
               <View
                 style={{
                   flex: 6,
                 }}
               >
-                  <TouchableOpacity
-                    onPress={__switchCamera}
+                <TouchableOpacity
+                  onPress={__switchCamera}
+                  style={{
+                    backgroundColor: "#000",
+                    marginTop: 20,
+                    borderRadius: 5,
+                    height: 65,
+                    width: 65,
+                    alignItems: "center",
+                    left: "20%",
+                    top: "5%",
+                  }}
+                >
+                  <Text
                     style={{
-                      backgroundColor: "#000",
-                      marginTop: 20,
-                      borderRadius: 5,
-                      height: 65,
-                      width: 65,
-                      alignItems :"center",
-                      left : "20%",
-                      top:"5%",
+                      fontSize: 40,
                     }}
                   >
-                    <Text
-                      style={{
-                        fontSize: 40,
-                      }}
-                    >
-                      {cameraType === Constants.Type.back ? "🤳" : "📷"}
-                    </Text>
-                  </TouchableOpacity>
+                    {cameraType === Constants.Type.back ? "🤳" : "📷"}
+                  </Text>
+                </TouchableOpacity>
 
-              
                 <View
                   style={{
                     position: "absolute",
@@ -194,7 +211,6 @@ export default function App() {
                   </View>
                 </View>
               </View>
-              
             </Camera>
           )}
         </View>
@@ -202,39 +218,91 @@ export default function App() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "#fff",
-            justifyContent: "center",
-            alignItems: "center",
+            width: "100%",
           }}
         >
-          <TouchableOpacity
-            onPress={__startCamera}
+          <View
             style={{
-              width: 80,
-              borderRadius: 50,
-              backgroundColor: "#14274e",
-              flexDirection: "row",
-              justifyContent: "center",
+              height: 100,
+              width: "100%",
+              backgroundColor: "green",
               alignItems: "center",
-              height: 80,
+              flexDirection: "row",
+              justifyContent: "space-around",
             }}
           >
-            <Text
+            <Text style={styles.header}>Produit</Text>
+            <Text style={styles.header}>Prix</Text>
+            <Text style={styles.header}>Quantité</Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              width: "100%",
+              backgroundColor: "yellow",
+            }}
+          >
+            <ScrollView>
+              <View>
+                {serviceList.map((singleService, index) => (
+                  <View
+                    style={{
+                      backgroundColor: "red",
+                    }}
+                  >
+                    <View>
+                      <Input name="produit" label="Produit" />
+                      {serviceList.length - 1 === index && (
+                        <TouchableOpacity onPress={handleServiceAdd}>
+                          <Text>Ajouter un produit</Text>
+                        </TouchableOpacity>
+                      )}
+
+                      {serviceList.length !== 1 && (
+                        <TouchableOpacity
+                          onPress={() => handleServiceRemove(index)}
+                        >
+                          <Text>Remove</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+          <View
+            style={{
+              height: 120,
+              width: "100%",
+              backgroundColor: "blue",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              onPress={__startCamera}
               style={{
-                color: "#fff",
-                fontSize : 30,
-                textAlignVertical :"center",
-                textAlign: "center",
+                width: 100,
+                height: 100,
+                borderRadius: 50,
+                backgroundColor: "#000",
+                justifyContent: "center",
+                alignItems: "center",
+                top: "10%",
               }}
             >
-              📷
-            </Text>
-          </TouchableOpacity>
-          
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 50,
+                }}
+              >
+                📷
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
-
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -245,6 +313,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  header: {
+    color: "#000",
+    top: "2%",
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
 
@@ -284,10 +358,10 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }: any) => {
               style={{
                 width: 130,
                 height: 70,
-                backgroundColor : "black",
-                marginLeft : "20%",
+                backgroundColor: "black",
+                marginLeft: "20%",
                 alignItems: "center",
-                justifyContent : "center",
+                justifyContent: "center",
                 borderRadius: 4,
               }}
             >
@@ -295,7 +369,6 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }: any) => {
                 style={{
                   color: "#fff",
                   fontSize: 20,
-                  
                 }}
               >
                 Nouvelle
@@ -304,12 +377,12 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }: any) => {
             <TouchableOpacity
               onPress={savePhoto}
               style={{
-                backgroundColor : "black",
+                backgroundColor: "black",
                 width: 70,
                 height: 70,
-                marginRight : "20%",
+                marginRight: "20%",
                 alignItems: "center",
-                justifyContent:"center",
+                justifyContent: "center",
                 borderRadius: 4,
               }}
             >
