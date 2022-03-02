@@ -245,19 +245,32 @@ export default function App() {
             <ScrollView>
               <View>
                 {serviceList.map((singleService, index) => (
-                  <View
-                    style={{
-                      backgroundColor: "red",
-                    }}
-                  >
-                    <View>
-                      <Input name="produit" label="Produit" />
-                      {serviceList.length - 1 === index && (
-                        <TouchableOpacity onPress={handleServiceAdd}>
-                          <Text>Ajouter un produit</Text>
-                        </TouchableOpacity>
-                      )}
+                  <View>
+                    <View
+                      style={{
+                        height: 100,
+                        width: "100%",
+                        backgroundColor: "red",
+                        alignItems: "center",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                      }}
+                    >
+                      <Input name="produit" placeholder="Nom" />
+                      <Input name="prix" placeholder="Prix" />
+                      <Input name="quantite" placeholder="Quantité" />
+                    </View>
 
+                    <View
+                      style={{
+                        height: 30,
+                        width: "100%",
+                        backgroundColor: "white",
+                        alignItems: "center",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                      }}
+                    >
                       {serviceList.length !== 1 && (
                         <TouchableOpacity
                           onPress={() => handleServiceRemove(index)}
@@ -265,6 +278,13 @@ export default function App() {
                           <Text>Remove</Text>
                         </TouchableOpacity>
                       )}
+                      <View>
+                        {serviceList.length - 1 === index && (
+                          <TouchableOpacity onPress={handleServiceAdd}>
+                            <Text>Ajouter un produit</Text>
+                          </TouchableOpacity>
+                        )}
+                      </View>
                     </View>
                   </View>
                 ))}
