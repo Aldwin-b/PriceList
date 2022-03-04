@@ -1,4 +1,4 @@
-import React, { version } from "react";
+import * as React from "react";
 import { useState } from "react";
 import {
   StyleSheet,
@@ -13,8 +13,12 @@ import {
 } from "react-native";
 import { Camera, Constants } from "expo-camera";
 import Input from "./components/Input";
+import Header from "./components/Header";
+
 let camera: Camera;
 export default function App() {
+  let [count, setCount] = useState(1);
+  //Caméra
   const [startCamera, setStartCamera] = React.useState(false);
   const [previewVisible, setPreviewVisible] = React.useState(false);
   const [capturedImage, setCapturedImage] = React.useState<any>(null);
@@ -66,15 +70,15 @@ export default function App() {
   };
   const [serviceList, setServiceList] = useState([{ service: "" }]);
 
-  const handleServiceChange = (
+  /* const handleServiceChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: string
   ) => {
     const { name, value } = e.target;
     const list = [...serviceList];
     list[index][name] = value;
     setServiceList(list);
-  };
+  };*/
 
   const handleServiceRemove = (index: number) => {
     const list = [...serviceList];
@@ -85,6 +89,16 @@ export default function App() {
   const handleServiceAdd = () => {
     setServiceList([...serviceList, { service: "" }]);
   };
+
+  //Compteur quantité
+  function incrementCount() {
+    count = count + 1;
+    setCount(count);
+  }
+  function decrementCount() {
+    count = count - 1;
+    setCount(count);
+  }
   return (
     <View style={styles.container}>
       {startCamera ? (
@@ -221,19 +235,8 @@ export default function App() {
             width: "100%",
           }}
         >
-          <View
-            style={{
-              height: 100,
-              width: "100%",
-              backgroundColor: "green",
-              alignItems: "center",
-              flexDirection: "row",
-              justifyContent: "space-around",
-            }}
-          >
-            <Text style={styles.header}>Produit</Text>
-            <Text style={styles.header}>Prix</Text>
-            <Text style={styles.header}>Quantité</Text>
+          <View>
+            <Header />
           </View>
           <View
             style={{
@@ -245,20 +248,90 @@ export default function App() {
             <ScrollView>
               <View>
                 {serviceList.map((singleService, index) => (
-                  <View>
+                  <View style={{ flex: 1 }}>
                     <View
                       style={{
-                        height: 100,
+                        flex: 1,
+                        height: 120,
                         width: "100%",
                         backgroundColor: "red",
-                        alignItems: "center",
                         flexDirection: "row",
-                        justifyContent: "space-around",
+                        justifyContent: "space-evenly",
                       }}
                     >
-                      <Input name="produit" placeholder="Nom" />
-                      <Input name="prix" placeholder="Prix" />
-                      <Input name="quantite" placeholder="Quantité" />
+                      <View
+                        style={{
+                          flex: 4,
+                          backgroundColor: "pink",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Input name="produit" placeholder="Nom" />
+                      </View>
+                      <View
+                        style={{
+                          flex: 4,
+                          backgroundColor: "pink",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Input name="prix" placeholder="Prix" />
+                      </View>
+                      <View
+                        style={{
+                          flex: 5,
+                          backgroundColor: "pink",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <TouchableOpacity onPress={decrementCount}>
+                          <Text
+                            style={{
+                              height: 50,
+                              width: 50,
+                              borderRadius: 50,
+                              backgroundColor: "purple",
+                              textAlign: "center",
+                              textAlignVertical: "center",
+                            }}
+                          >
+                            -
+                          </Text>
+                        </TouchableOpacity>
+                        <View>
+                          <Text
+                            style={{
+                              fontSize: 30,
+                              borderWidth: 2,
+                              padding: 5,
+                              textAlign: "center",
+                              textAlignVertical: "center",
+                            }}
+                          >
+                            {count}
+                          </Text>
+                        </View>
+                        <TouchableOpacity onPress={incrementCount}>
+                          <Text
+                            style={{
+                              height: 50,
+                              width: 50,
+                              borderRadius: 50,
+                              backgroundColor: "purple",
+                              textAlign: "center",
+                              textAlignVertical: "center",
+                            }}
+                          >
+                            +
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
 
                     <View
