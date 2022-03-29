@@ -68,6 +68,8 @@ export default function App() {
       setCameraType(Camera.Constants.Type.back);
     }
   };
+
+  // Produits
   const [serviceList, setServiceList] = useState([{ service: "" }]);
 
   /* const handleServiceChange = (
