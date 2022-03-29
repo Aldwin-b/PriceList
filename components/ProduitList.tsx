@@ -6,7 +6,6 @@ import { Produit } from "../services/produit.service";
 interface ProduitListProps {
   produits: Array<Produit>;
   onDelete: (task: string) => void;
-  onToggle: (task: string) => void;
 }
 
 export default class ProduitList extends Component<ProduitListProps, {}> {
@@ -17,11 +16,7 @@ export default class ProduitList extends Component<ProduitListProps, {}> {
         data={this.props.produits}
         keyExtractor={(produit) => produit.nom}
         renderItem={({ item }: { item: Produit }) => (
-          <ProduitItem
-            produit={item}
-            onDelete={this.props.onDelete}
-            onToggle={this.props.onToggle}
-          />
+          <ProduitItem produit={item} onDelete={this.props.onDelete} />
         )}
       />
     );

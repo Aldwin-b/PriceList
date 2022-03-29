@@ -7,23 +7,17 @@ import {
   TouchableOpacity,
   Alert,
   ImageBackground,
-  Image,
-  Button,
-  ScrollView,
 } from "react-native";
 import { Camera, Constants } from "expo-camera";
-import Input from "./components/Input";
-import Header from "./components/Header";
 
 let camera: Camera;
-export default function App() {
-  let [count, setCount] = useState(1);
+export default function Cam() {
   //Caméra
-  const [startCamera, setStartCamera] = React.useState(false);
-  const [previewVisible, setPreviewVisible] = React.useState(false);
-  const [capturedImage, setCapturedImage] = React.useState<any>(null);
-  var [cameraType, setCameraType] = React.useState(Camera.Constants.Type.back);
-  const [flashMode, setFlashMode] = React.useState("off");
+  const [startCamera, setStartCamera] = useState(false);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [capturedImage, setCapturedImage] = useState<any>(null);
+  var [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
+  const [flashMode, setFlashMode] = useState("off");
 
   const __startCamera = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
@@ -69,38 +63,6 @@ export default function App() {
     }
   };
 
-  // Produits
-  const [serviceList, setServiceList] = useState([{ service: "" }]);
-
-  /* const handleServiceChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: string
-  ) => {
-    const { name, value } = e.target;
-    const list = [...serviceList];
-    list[index][name] = value;
-    setServiceList(list);
-  };*/
-
-  const handleServiceRemove = (index: number) => {
-    const list = [...serviceList];
-    list.splice(index, 1);
-    setServiceList(list);
-  };
-
-  const handleServiceAdd = () => {
-    setServiceList([...serviceList, { service: "" }]);
-  };
-
-  //Compteur quantité
-  function incrementCount() {
-    count = count + 1;
-    setCount(count);
-  }
-  function decrementCount() {
-    count = count - 1;
-    setCount(count);
-  }
   return (
     <View style={styles.container}>
       {startCamera ? (
@@ -231,172 +193,7 @@ export default function App() {
           )}
         </View>
       ) : (
-        <View
-          style={{
-            flex: 1,
-            width: "100%",
-          }}
-        >
-          <View>
-            <Header />
-          </View>
-          <View
-            style={{
-              flex: 1,
-              width: "100%",
-              backgroundColor: "yellow",
-            }}
-          >
-            <ScrollView>
-              <View>
-                {serviceList.map((singleService, index) => (
-                  <View style={{ flex: 1 }}>
-                    <View
-                      style={{
-                        flex: 1,
-                        height: 120,
-                        width: "100%",
-                        backgroundColor: "red",
-                        flexDirection: "row",
-                        justifyContent: "space-evenly",
-                      }}
-                    >
-                      <View
-                        style={{
-                          flex: 4,
-                          backgroundColor: "pink",
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Input placeholder="Nom" />
-                      </View>
-                      <View
-                        style={{
-                          flex: 4,
-                          backgroundColor: "pink",
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Input placeholder="Prix" />
-                      </View>
-                      <View
-                        style={{
-                          flex: 5,
-                          backgroundColor: "pink",
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <TouchableOpacity onPress={decrementCount}>
-                          <Text
-                            style={{
-                              height: 50,
-                              width: 50,
-                              borderRadius: 50,
-                              backgroundColor: "purple",
-                              textAlign: "center",
-                              textAlignVertical: "center",
-                            }}
-                          >
-                            -
-                          </Text>
-                        </TouchableOpacity>
-                        <View>
-                          <Text
-                            style={{
-                              fontSize: 30,
-                              borderWidth: 2,
-                              padding: 5,
-                              textAlign: "center",
-                              textAlignVertical: "center",
-                            }}
-                          >
-                            {count}
-                          </Text>
-                        </View>
-                        <TouchableOpacity onPress={incrementCount}>
-                          <Text
-                            style={{
-                              height: 50,
-                              width: 50,
-                              borderRadius: 50,
-                              backgroundColor: "purple",
-                              textAlign: "center",
-                              textAlignVertical: "center",
-                            }}
-                          >
-                            +
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-
-                    <View
-                      style={{
-                        height: 30,
-                        width: "100%",
-                        backgroundColor: "white",
-                        alignItems: "center",
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                      }}
-                    >
-                      {serviceList.length !== 1 && (
-                        <TouchableOpacity
-                          onPress={() => handleServiceRemove(index)}
-                        >
-                          <Text>Remove</Text>
-                        </TouchableOpacity>
-                      )}
-                      <View>
-                        {serviceList.length - 1 === index && (
-                          <TouchableOpacity onPress={handleServiceAdd}>
-                            <Text>Ajouter un produit</Text>
-                          </TouchableOpacity>
-                        )}
-                      </View>
-                    </View>
-                  </View>
-                ))}
-              </View>
-            </ScrollView>
-          </View>
-          <View
-            style={{
-              height: 120,
-              width: "100%",
-              backgroundColor: "blue",
-              alignItems: "center",
-            }}
-          >
-            <TouchableOpacity
-              onPress={__startCamera}
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 50,
-                backgroundColor: "#000",
-                justifyContent: "center",
-                alignItems: "center",
-                top: "10%",
-              }}
-            >
-              <Text
-                style={{
-                  color: "#fff",
-                  fontSize: 50,
-                }}
-              >
-                📷
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <View></View>
       )}
     </View>
   );

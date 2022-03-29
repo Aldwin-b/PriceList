@@ -1,61 +1,66 @@
-import * as React from "react";
-import {
-  View,
-  TextInput,
-  Text,
-  StyleSheet,
-  TextStyle,
-  TextInputProps,
-} from "react-native";
-import { FieldError } from "react-hook-form";
-interface Props extends TextInputProps {
-  name: string;
-  label?: string;
-  labelStyle?: TextStyle;
-  error?: FieldError | undefined;
+import React, { Component } from "react";
+import { StyleSheet, TextInput } from "react-native";
+
+interface InputProps {
+  placeholder: string;
+  onSubmitEditing: (task: string) => void;
 }
 
-export default React.forwardRef<any, Props>(
-  (props, ref): React.ReactElement => {
-    const { label, labelStyle, error, ...inputProps } = props;
+interface InputState {
+  text: string;
+  prix: number;
+}
+
+export default class Input extends Component<InputProps, InputState> {
+  state: InputState = {
+    text: "",
+    prix: 0,
+  };
+
+  onChangeText = (text: string) => {
+    this.setState({ text });
+  };
+
+  onChangeValue = (prix: number) => {
+    this.setState({ prix });
+  };
+
+  onSubmitEditing = () => {
+    const { text } = this.state;
+
+    if (!text) return; // Don't submit if empty
+
+    this.props.onSubmitEditing(text);
+
+    // Reset text after submission
+    this.setState({ text: "" });
+  };
+
+  render() {
+    const { placeholder } = this.props;
+    const { text } = this.state;
 
     return (
-      <View style={styles.container}>
-        {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
-        <TextInput
-          autoCapitalize="none"
-          ref={ref}
-          style={[styles.input, { borderColor: error ? "#fc6d47" : "#c0cbd3" }]}
-          {...inputProps}
-        />
-        <Text style={styles.textError}>{error && error.message}</Text>
-      </View>
+      <TextInput
+        style={styles.input}
+        value={text}
+        placeholder={placeholder}
+        onChangeText={this.onChangeText}
+        onSubmitEditing={this.onSubmitEditing}
+      />
     );
   }
-);
+}
+
+const colors = {
+  background: "whitesmoke",
+};
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 8,
-  },
   input: {
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingVertical: 5,
-    paddingLeft: 5,
-    fontSize: 20,
     height: 50,
-    color: "#c0cbd3",
-  },
-  label: {
-    paddingVertical: 5,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#c0cbd3",
-  },
-  textError: {
-    color: "#fc6d47",
-    fontSize: 14,
+    backgroundColor: colors.background,
+    padding: 10,
+    marginBottom: 10,
   },
 });
