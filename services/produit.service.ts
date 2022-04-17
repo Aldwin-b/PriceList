@@ -14,9 +14,9 @@ class ProduitService {
     });
   }
 
-  add(nom: string) {
+  add(nom: string, prix: number) {
     // Add new Produit at beginning of array
-    this.produits = [{ nom, prix: 0, quantite: 1 }, ...this.produits];
+    this.produits = [{ nom, prix, quantite: 1 }, ...this.produits];
   }
 
   remove(nom: string) {
