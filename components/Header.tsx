@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     top: "2%",
     fontSize: 20,
     fontWeight: "bold",
+    right: 16,
   },
   header: {
     height: 100,

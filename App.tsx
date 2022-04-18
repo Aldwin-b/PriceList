@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import { Camera, Constants } from "expo-camera";
 import Header from "./components/Header";
-import ProduitScreen from "./screens/ProduitScreen";
+import ProduitScreen from "./components/ProduitScreen";
+import ProduitsList from "./components/ProduitList";
 
 let camera: Camera;
 export default function App() {
@@ -67,12 +68,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       {startCamera ? (
-        <View
-          style={{
-            flex: 1,
-            width: "150%",
-          }}
-        >
+        <View style={styles.preview}>
           {previewVisible && capturedImage ? (
             <CameraPreview
               photo={capturedImage}
@@ -82,7 +78,7 @@ export default function App() {
           ) : (
             <Camera
               type={cameraType}
-              style={{ flex: 1 }}
+              style={styles.justflex}
               ref={(r) => {
                 camera = r;
               }}
@@ -95,9 +91,9 @@ export default function App() {
                 }}
               >
                 <TouchableOpacity
-                  onPress={__handleFlashMode}
+                  onPress={__switchCamera}
                   style={{
-                    backgroundColor: flashMode === "off" ? "#000" : "#fff",
+                    backgroundColor: "#000",
                     alignItems: "center",
                     borderRadius: 7,
                     height: 65,
@@ -107,9 +103,10 @@ export default function App() {
                   <Text
                     style={{
                       fontSize: 40,
+                      color: "white",
                     }}
                   >
-                    ⚡️
+                    {cameraType === Constants.Type.back ? "🤳" : "📷"}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -120,7 +117,6 @@ export default function App() {
                     height: 65,
                     width: 65,
                     alignItems: "center",
-                    justifyContent: "center",
                   }}
                 >
                   <Text
@@ -138,28 +134,6 @@ export default function App() {
                   flex: 6,
                 }}
               >
-                <TouchableOpacity
-                  onPress={__switchCamera}
-                  style={{
-                    backgroundColor: "#000",
-                    marginTop: 20,
-                    borderRadius: 5,
-                    height: 65,
-                    width: 65,
-                    alignItems: "center",
-                    left: "20%",
-                    top: "5%",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 40,
-                    }}
-                  >
-                    {cameraType === Constants.Type.back ? "🤳" : "📷"}
-                  </Text>
-                </TouchableOpacity>
-
                 <View
                   style={{
                     position: "absolute",
@@ -194,42 +168,18 @@ export default function App() {
           )}
         </View>
       ) : (
-        <View
-          style={{
-            flex: 1,
-            width: "100%",
-          }}
-        >
+        <View style={styles.justflex}>
           <View>
             <Header />
           </View>
-          <View
-            style={{
-              flex: 1,
-            }}
-          >
+          <View style={styles.justflex}>
             <ProduitScreen />
           </View>
-          <View
-            style={{
-              height: "15%",
-              width: "100%",
-              backgroundColor: "blue",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+
+          <View // FOOTER
+            style={styles.footer}
           >
-            <TouchableOpacity
-              onPress={__startCamera}
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 50,
-                backgroundColor: "#000",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+            <TouchableOpacity onPress={__startCamera} style={styles.startcam}>
               <Text
                 style={{
                   color: "#fff",
@@ -246,14 +196,7 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+// Photo Prise
 
 const CameraPreview = ({ photo, retakePicture, savePhoto }: any) => {
   console.log("sdsfds", photo);
@@ -286,47 +229,11 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }: any) => {
               justifyContent: "space-between",
             }}
           >
-            <TouchableOpacity
-              onPress={retakePicture}
-              style={{
-                width: 130,
-                height: 70,
-                backgroundColor: "black",
-                marginLeft: "20%",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 4,
-              }}
-            >
-              <Text
-                style={{
-                  color: "#fff",
-                  fontSize: 20,
-                }}
-              >
-                Nouvelle
-              </Text>
+            <TouchableOpacity onPress={retakePicture} style={styles.newP}>
+              <Text style={styles.textP}>Nouvelle</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={savePhoto}
-              style={{
-                backgroundColor: "black",
-                width: 70,
-                height: 70,
-                marginRight: "20%",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 4,
-              }}
-            >
-              <Text
-                style={{
-                  color: "#fff",
-                  fontSize: 20,
-                }}
-              >
-                OK
-              </Text>
+            <TouchableOpacity onPress={savePhoto} style={styles.saveP}>
+              <Text style={styles.textP}>OK</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -334,3 +241,58 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }: any) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  preview: {
+    flex: 1,
+    width: "150%",
+  },
+  startcam: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: "#000",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  footer: {
+    height: "15%",
+    width: "100%",
+    backgroundColor: "blue",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  justflex: {
+    flex: 1,
+    width: "100%",
+  },
+  textP: {
+    color: "#fff",
+    fontSize: 20,
+  },
+  saveP: {
+    backgroundColor: "black",
+    width: 70,
+    height: 70,
+    marginRight: "20%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 4,
+  },
+  newP: {
+    width: 130,
+    height: 70,
+    backgroundColor: "black",
+    marginLeft: "20%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 4,
+  },
+});

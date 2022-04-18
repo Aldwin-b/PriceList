@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { StyleSheet, FlatList, View } from "react-native";
 import ProduitItem from "./ProduitItem";
 import { Produit } from "../services/produit.service";
-import PopUp from "./PopUp";
 
 interface ProduitListProps {
   produits: Array<Produit>;
@@ -22,7 +21,6 @@ export default class ProduitList extends Component<ProduitListProps, {}> {
             )}
           />
         </View>
-        <PopUp />
       </View>
     );
   }
@@ -30,8 +28,7 @@ export default class ProduitList extends Component<ProduitListProps, {}> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 7,
-    backgroundColor: "purple",
+    flex: 1,
   },
   upcontainer: {
     flex: 1,
