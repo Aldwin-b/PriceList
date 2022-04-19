@@ -16,10 +16,8 @@ export default class ProduitItem extends Component<ProduitItemProps, {}> {
       this.props.produit.quantite
     );
   };
-  mult(num1: number, num2: number) {
-    return num1 * num2;
-  }
-  loadProduits = () => {
+
+  loadProdPrix = () => {
     // Load all modules
     produitService.getAll().then((produits) => {
       this.setState({ produits });
@@ -28,17 +26,22 @@ export default class ProduitItem extends Component<ProduitItemProps, {}> {
 
   addQtte() {
     this.props.produit.quantite += 1;
-    this.loadProduits();
+    this.props.produit.stot =
+      this.props.produit.prix * this.props.produit.quantite;
+    this.loadProdPrix();
   }
   subQtte() {
     this.props.produit.quantite -= 1;
-    this.loadProduits();
+    this.props.produit.stot =
+      this.props.produit.prix * this.props.produit.quantite;
+    this.loadProdPrix();
   }
 
   render() {
     const text = this.props.produit.nom;
     const prix = this.props.produit.prix;
     const quantite = this.props.produit.quantite;
+    const stot = this.props.produit.stot;
 
     return (
       <View style={styles.upcontainer}>
@@ -67,9 +70,7 @@ export default class ProduitItem extends Component<ProduitItemProps, {}> {
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={styles.subtot}>
-          Sous-Total : {this.mult(prix, quantite)}
-        </Text>
+        <Text style={styles.subtot}>Sous-Total : {stot} €</Text>
       </View>
     );
   }
@@ -120,5 +121,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
     marginBottom: 5,
+    textDecorationLine: "underline",
   },
 });

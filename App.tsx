@@ -37,7 +37,8 @@ export default function App() {
 
   const __takePicture = async () => {
     const photo: any = await camera.takePictureAsync();
-    console.log(photo);
+    console.log(photo.height);
+
     setPreviewVisible(true);
     //setStartCamera(false)
     setCapturedImage(photo);
@@ -85,7 +86,7 @@ export default function App() {
             >
               <View
                 style={{
-                  top: "7%",
+                  top: "10%",
                   flexDirection: "row",
                   justifyContent: "space-around",
                 }}
@@ -129,24 +130,35 @@ export default function App() {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  flex: 6,
-                }}
-              >
+              <View style={{ flex: 1 }}>
                 <View
                   style={{
-                    position: "absolute",
+                    flex: 6,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      width: 210,
+                      maxHeight: 120,
+                      top: "8%",
+                      borderColor: "gold",
+                      borderRadius: 5,
+                      borderWidth: 3,
+                    }}
+                  ></View>
+                </View>
+                <View
+                  style={{
                     bottom: 0,
-                    flexDirection: "row",
                     flex: 1,
-                    width: "100%",
                     padding: 20,
                   }}
                 >
                   <View
                     style={{
-                      alignSelf: "center",
                       flex: 1,
                       alignItems: "center",
                     }}
@@ -154,9 +166,8 @@ export default function App() {
                     <TouchableOpacity
                       onPress={__takePicture}
                       style={{
-                        width: 80,
-                        height: 80,
-                        bottom: 0,
+                        width: 100,
+                        height: 100,
                         borderRadius: 50,
                         backgroundColor: "#fff",
                       }}
@@ -199,7 +210,7 @@ export default function App() {
 // Photo Prise
 
 const CameraPreview = ({ photo, retakePicture, savePhoto }: any) => {
-  console.log("sdsfds", photo);
+  console.log(photo);
   return (
     <View
       style={{

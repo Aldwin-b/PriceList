@@ -15,6 +15,7 @@ interface ProduitState {
   show: boolean;
   n: string;
   p: number;
+  total: number;
 }
 
 export default class ProduitScreen extends React.Component<{}, ProduitState> {
@@ -23,35 +24,45 @@ export default class ProduitScreen extends React.Component<{}, ProduitState> {
     show: false,
     n: "raté",
     p: 0,
+    total: 5,
   };
 
-  loadProduits = () => {
+  prod = [];
+
+  getTotal = () => {
+    this.state.produits.forEach((element) => {
+      this.state.total += element.stot;
+    });
+  };
+
+  loadProdPrix = () => {
     // Load all modules
     produitService.getAll().then((produits) => {
       this.setState({ produits });
     });
-  };
-
-  addProduit = (nom: string, prix: number) => {
-    produitService.add(nom, prix);
-    this.loadProduits();
+    this.state.total = 0;
+    this.getTotal();
   };
 
   removeProduit = (nom: string) => {
     produitService.remove(nom);
-    this.loadProduits();
+    this.loadProdPrix();
   };
 
   componentDidMount() {
-    this.loadProduits();
+    this.loadProdPrix();
   }
+
   openModal() {
-    this.setState({ show: true });
+    this.setState({ show: true }, () => {});
+    console.log("la", this.state.show);
   }
 
   closeModal() {
     this.setState({ show: false });
-    this.loadProduits();
+    this.loadProdPrix();
+
+    console.log("ici", this.state.show);
   }
 
   setText(str: string) {
@@ -72,7 +83,7 @@ export default class ProduitScreen extends React.Component<{}, ProduitState> {
 
         <View style={styles.container}>
           <View style={styles.total}>
-            <Text style={styles.totaltext}>TOTAL : </Text>
+            <Text style={styles.totaltext}>TOTAL : {this.state.total} € </Text>
           </View>
           <View style={styles.manuel}>
             <TouchableOpacity onPress={() => this.openModal()}>
@@ -104,9 +115,8 @@ export default class ProduitScreen extends React.Component<{}, ProduitState> {
                 />
                 <TouchableOpacity
                   onPress={() => {
-                    this.closeModal();
                     produitService.add(this.state.n, this.state.p);
-                    this.loadProduits();
+                    this.closeModal();
                   }}
                 >
                   <Text style={styles.submit}>Ajouter</Text>

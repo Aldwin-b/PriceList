@@ -2,6 +2,7 @@ export interface Produit {
   nom: string;
   prix: number;
   quantite: number;
+  stot: number;
 }
 
 class ProduitService {
@@ -16,7 +17,7 @@ class ProduitService {
 
   add(nom: string, prix: number) {
     // Add new Produit at beginning of array
-    this.produits = [{ nom, prix, quantite: 1 }, ...this.produits];
+    this.produits = [{ nom, prix, quantite: 1, stot: prix }, ...this.produits];
   }
 
   remove(nom: string) {
