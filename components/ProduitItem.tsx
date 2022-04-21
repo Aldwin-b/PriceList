@@ -46,21 +46,21 @@ export default class ProduitItem extends Component<ProduitItemProps, {}> {
     return (
       <View style={styles.upcontainer}>
         <View style={styles.container}>
-          <Text style={styles.text}>{text}</Text>
-          <Text style={styles.text}> {prix}</Text>
-          <View style={styles.compteur}>
+          <Text style={styles.item}>{text}</Text>
+          <Text style={styles.item}> {prix}</Text>
+          <View style={styles.item}>
             <TouchableOpacity
               onPress={() => this.subQtte()}
               style={styles.container}
             >
-              <Text>-</Text>
+              <Text style={styles.pm}>-</Text>
             </TouchableOpacity>
-            <Text style={styles.text}>{quantite}</Text>
+            <Text style={styles.compteur}>{quantite}</Text>
             <TouchableOpacity
               style={styles.container}
               onPress={() => this.addQtte()}
             >
-              <Text>+</Text>
+              <Text style={styles.pm}>+</Text>
             </TouchableOpacity>
           </View>
 
@@ -70,7 +70,7 @@ export default class ProduitItem extends Component<ProduitItemProps, {}> {
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={styles.subtot}>Sous-Total : {stot} €</Text>
+        <Text style={styles.subtot}>Sous-Total : {stot.toFixed(2)} €</Text>
       </View>
     );
   }
@@ -88,24 +88,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  compteur: {
-    flex: 4,
-    borderColor: "yellow",
-    height: 75,
-    borderWidth: 2,
-    margin: 5,
-    flexDirection: "row",
-  },
-  text: {
+  item: {
     flex: 4,
     color: "white",
-    fontSize: 14,
+    fontSize: 20,
     borderColor: "yellow",
     textAlign: "center",
     textAlignVertical: "center",
+    flexDirection: "row",
     height: 75,
     borderWidth: 2,
     margin: 5,
+  },
+  compteur: {
+    flex: 1,
+    borderColor: "orange",
+    borderWidth: 2,
+    textAlignVertical: "center",
+    textAlign: "center",
+    margin: 5,
+  
   },
   actionsContainer: {
     flex: 1,
@@ -118,9 +120,18 @@ const styles = StyleSheet.create({
   },
   subtot: {
     flex: 1,
-    fontSize: 15,
+    fontSize: 20,
     textAlign: "center",
     marginBottom: 5,
     textDecorationLine: "underline",
   },
+  pm : {
+    flex : 1,
+    fontSize : 25,
+    backgroundColor : "red",
+    borderRadius : 50,
+    borderWidth : 5,
+    textAlign: "center",
+    textAlignVertical: "center",
+  }
 });

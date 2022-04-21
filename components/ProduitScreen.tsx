@@ -24,24 +24,35 @@ export default class ProduitScreen extends React.Component<{}, ProduitState> {
     show: false,
     n: "raté",
     p: 0,
-    total: 5,
+    total: 0,
   };
 
-  prod = [];
+  refresh =  () => {
+    this.loadProdPrix();
+  }
+
+  onChange = (tot : number) => {
+    this.setState({total:tot})
+  }
 
   getTotal = () => {
+    this.state.total = 0;
+    console.log(this.state.produits)
     this.state.produits.forEach((element) => {
       this.state.total += element.stot;
     });
+    console.log("1",this.state.total);
   };
 
   loadProdPrix = () => {
     // Load all modules
-    produitService.getAll().then((produits) => {
+    produitService.getAll().then((produits) => 
+    {
       this.setState({ produits });
+      this.getTotal();
+      this.onChange(this.state.total);
+      console.log("2",this.state.total);
     });
-    this.state.total = 0;
-    this.getTotal();
   };
 
   removeProduit = (nom: string) => {
@@ -83,9 +94,15 @@ export default class ProduitScreen extends React.Component<{}, ProduitState> {
 
         <View style={styles.container}>
           <View style={styles.total}>
-            <Text style={styles.totaltext}>TOTAL : {this.state.total} € </Text>
+            <Text style={styles.totaltext}>TOTAL : {this.state.total.toFixed(2)} € </Text>
           </View>
+          <View style={{}}>
+          <TouchableOpacity onPress={() => this.refresh()}>
+              <Text style={{flex:1,fontSize : 20,}}> 🔄 </Text>
+            </TouchableOpacity>
+            </View>
           <View style={styles.manuel}>
+ 
             <TouchableOpacity onPress={() => this.openModal()}>
               <Text style={styles.add}>Ajouter Produit</Text>
             </TouchableOpacity>
@@ -156,6 +173,10 @@ const styles = StyleSheet.create({
     color: "white",
     textAlignVertical: "center",
     left: "10%",
+  },
+  refresh:{
+    flex : 1,
+    backgroundColor : "skyblue",
   },
   manuel: {
     flex: 1,

@@ -141,8 +141,8 @@ export default function App() {
                   <View
                     style={{
                       flex: 1,
-                      width: 210,
-                      maxHeight: 120,
+                      width: 200,
+                      maxHeight: 100,
                       top: "8%",
                       borderColor: "gold",
                       borderRadius: 5,
