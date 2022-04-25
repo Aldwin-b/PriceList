@@ -24,6 +24,8 @@ export default class ProduitItem extends Component<ProduitItemProps, {}> {
     });
   };
 
+  onUpdateQtte = () => {};
+
   addQtte() {
     this.props.produit.quantite += 1;
     this.props.produit.stot =
@@ -31,9 +33,11 @@ export default class ProduitItem extends Component<ProduitItemProps, {}> {
     this.loadProdPrix();
   }
   subQtte() {
-    this.props.produit.quantite -= 1;
-    this.props.produit.stot =
-      this.props.produit.prix * this.props.produit.quantite;
+    if (this.props.produit.quantite !== 1) {
+      this.props.produit.quantite -= 1;
+      this.props.produit.stot =
+        this.props.produit.prix * this.props.produit.quantite;
+    }
     this.loadProdPrix();
   }
 
@@ -47,7 +51,7 @@ export default class ProduitItem extends Component<ProduitItemProps, {}> {
       <View style={styles.upcontainer}>
         <View style={styles.container}>
           <Text style={styles.item}>{text}</Text>
-          <Text style={styles.item}> {prix}</Text>
+          <Text style={styles.item}> {prix} €</Text>
           <View style={styles.item}>
             <TouchableOpacity
               onPress={() => this.subQtte()}
@@ -78,7 +82,7 @@ export default class ProduitItem extends Component<ProduitItemProps, {}> {
 const styles = StyleSheet.create({
   upcontainer: {
     flex: 1,
-    backgroundColor: "pink",
+    backgroundColor: "#f69000",
     marginTop: 20,
     marginBottom: 5,
   },
@@ -89,49 +93,48 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   item: {
-    flex: 4,
-    color: "white",
+    flex: 3,
+    color: "#11222c",
     fontSize: 20,
-    borderColor: "yellow",
     textAlign: "center",
     textAlignVertical: "center",
     flexDirection: "row",
     height: 75,
-    borderWidth: 2,
     margin: 5,
   },
   compteur: {
-    flex: 1,
-    borderColor: "orange",
-    borderWidth: 2,
-    textAlignVertical: "center",
+    flex: 0.75,
+    top: "10%",
     textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
     margin: 5,
-  
   },
   actionsContainer: {
     flex: 1,
     alignItems: "flex-end",
-    backgroundColor: "orange",
   },
   removeIcon: {
-    color: "red",
-    fontSize: 25,
+    color: "#11222c",
+    fontSize: 40,
+    textAlign: "center",
+    bottom: 5,
   },
   subtot: {
     flex: 1,
     fontSize: 20,
+    color: "#11222c",
     textAlign: "center",
     marginBottom: 5,
     textDecorationLine: "underline",
   },
-  pm : {
-    flex : 1,
-    fontSize : 25,
-    backgroundColor : "red",
-    borderRadius : 50,
-    borderWidth : 5,
+  pm: {
+    flex: 1,
+    height: 38,
+    fontSize: 25,
+    backgroundColor: "#f6c624",
+    borderRadius: 50,
+    borderWidth: 2,
     textAlign: "center",
-    textAlignVertical: "center",
-  }
+  },
 });

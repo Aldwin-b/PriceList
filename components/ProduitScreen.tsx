@@ -27,31 +27,27 @@ export default class ProduitScreen extends React.Component<{}, ProduitState> {
     total: 0,
   };
 
-  refresh =  () => {
+  refresh = () => {
     this.loadProdPrix();
-  }
+  };
 
-  onChange = (tot : number) => {
-    this.setState({total:tot})
-  }
+  onChange = (tot: number) => {
+    this.setState({ total: tot });
+  };
 
   getTotal = () => {
     this.state.total = 0;
-    console.log(this.state.produits)
     this.state.produits.forEach((element) => {
       this.state.total += element.stot;
     });
-    console.log("1",this.state.total);
   };
 
   loadProdPrix = () => {
     // Load all modules
-    produitService.getAll().then((produits) => 
-    {
+    produitService.getAll().then((produits) => {
       this.setState({ produits });
       this.getTotal();
       this.onChange(this.state.total);
-      console.log("2",this.state.total);
     });
   };
 
@@ -66,14 +62,11 @@ export default class ProduitScreen extends React.Component<{}, ProduitState> {
 
   openModal() {
     this.setState({ show: true }, () => {});
-    console.log("la", this.state.show);
   }
 
   closeModal() {
     this.setState({ show: false });
     this.loadProdPrix();
-
-    console.log("ici", this.state.show);
   }
 
   setText(str: string) {
@@ -84,8 +77,8 @@ export default class ProduitScreen extends React.Component<{}, ProduitState> {
   }
   render() {
     return (
-      <View style={styles.upcontainer}>
-        <View style={styles.produit}>
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 8 }}>
           <ProduitList
             produits={this.state.produits}
             onDelete={this.removeProduit}
@@ -94,31 +87,22 @@ export default class ProduitScreen extends React.Component<{}, ProduitState> {
 
         <View style={styles.container}>
           <View style={styles.total}>
-            <Text style={styles.totaltext}>TOTAL : {this.state.total.toFixed(2)} € </Text>
+            <Text style={styles.totaltext}>
+              TOTAL : {this.state.total.toFixed(2)} €{" "}
+            </Text>
           </View>
-          <View style={{}}>
-          <TouchableOpacity onPress={() => this.refresh()}>
-              <Text style={{flex:1,fontSize : 20,}}> 🔄 </Text>
+          <View style={styles.refresh}>
+            <TouchableOpacity onPress={() => this.refresh()}>
+              <Text style={styles.rtext}> 🔄 </Text>
             </TouchableOpacity>
-            </View>
+          </View>
           <View style={styles.manuel}>
- 
             <TouchableOpacity onPress={() => this.openModal()}>
               <Text style={styles.add}>Ajouter Produit</Text>
             </TouchableOpacity>
             <Modal transparent={true} visible={this.state.show}>
-              <View style={{ flex: 1 }}></View>
+              <View style={{ flex: 0.5 }}></View>
               <View style={styles.modal}>
-                <TouchableOpacity>
-                  <Text
-                    style={styles.input}
-                    onPress={() => {
-                      this.closeModal();
-                    }}
-                  >
-                    X
-                  </Text>
-                </TouchableOpacity>
                 <Text style={styles.text}>Nom</Text>
                 <TextInput
                   style={styles.input}
@@ -138,7 +122,30 @@ export default class ProduitScreen extends React.Component<{}, ProduitState> {
                 >
                   <Text style={styles.submit}>Ajouter</Text>
                 </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text
+                    style={{
+                      width: 50,
+                      height: 50,
+                      backgroundColor: "#f6c624",
+                      borderColor: "white",
+                      borderWidth: 1,
+                      borderRadius: 50,
+                      top: 5,
+                      textAlignVertical: "center",
+                      textAlign: "center",
+                      fontSize: 30,
+                      color: "red",
+                    }}
+                    onPress={() => {
+                      this.closeModal();
+                    }}
+                  >
+                    X
+                  </Text>
+                </TouchableOpacity>
               </View>
+              <View style={{ flex: 0.5 }}></View>
             </Modal>
           </View>
         </View>
@@ -148,12 +155,6 @@ export default class ProduitScreen extends React.Component<{}, ProduitState> {
 }
 
 const styles = StyleSheet.create({
-  upcontainer: {
-    flex: 1,
-  },
-  produit: {
-    flex: 8,
-  },
   popup: {
     flex: 1,
     alignItems: "flex-end",
@@ -161,31 +162,44 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    backgroundColor: "red",
     alignItems: "flex-end",
   },
   total: {
     height: "100%",
-    flex: 5,
+    flex: 3,
     justifyContent: "center",
   },
   totaltext: {
-    color: "white",
     textAlignVertical: "center",
     left: "10%",
+    fontSize: 20,
+    fontWeight: "bold",
+    bottom: 10,
   },
-  refresh:{
-    flex : 1,
-    backgroundColor : "skyblue",
+  refresh: {
+    flex: 1.1,
+    height: "100%",
+    backgroundColor: "skyblue",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderRadius: 50,
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  rtext: {
+    textAlign: "center",
+    fontSize: 30,
   },
   manuel: {
-    flex: 1,
+    flex: 1.1,
     height: "100%",
-    width: 75,
-    backgroundColor: "gold",
+    width: 30,
+    backgroundColor: "#f69000",
     justifyContent: "center",
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 50,
+    marginHorizontal: 20,
+    marginVertical: 10,
   },
   add: {
     textAlign: "center",
@@ -195,7 +209,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 50,
     borderRadius: 50,
-    backgroundColor: "#000000",
+    backgroundColor: "#1c5858",
   },
   text: {
     color: "white",
@@ -205,18 +219,20 @@ const styles = StyleSheet.create({
   input: {
     width: 100,
     height: 50,
-    backgroundColor: "red",
+    backgroundColor: "#f6c624",
     borderColor: "white",
     borderWidth: 1,
     borderRadius: 5,
+    top: 5,
   },
   submit: {
-    color: "white",
+    color: "#1c5858",
     width: 100,
     margin: 30,
     borderRadius: 5,
     borderWidth: 2,
-    borderColor: "yellow",
+    backgroundColor: "#f6c624",
+    borderColor: "white",
     textAlign: "center",
     fontSize: 20,
   },

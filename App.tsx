@@ -193,7 +193,7 @@ export default function App() {
             <TouchableOpacity onPress={__startCamera} style={styles.startcam}>
               <Text
                 style={{
-                  color: "#fff",
+                  color: "white",
                   fontSize: 50,
                 }}
               >
@@ -268,14 +268,14 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: "#000",
+    backgroundColor: "#f69000",
     justifyContent: "center",
     alignItems: "center",
   },
   footer: {
     height: "15%",
     width: "100%",
-    backgroundColor: "blue",
+    backgroundColor: "#53b1b1",
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
