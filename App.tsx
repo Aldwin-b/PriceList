@@ -11,7 +11,6 @@ import {
 import { Camera, Constants } from "expo-camera";
 import Header from "./components/Header";
 import ProduitScreen from "./components/ProduitScreen";
-import ImagePicker from "react-native-image-crop-picker";
 
 let camera: Camera;
 export default function App() {
@@ -39,7 +38,8 @@ export default function App() {
     //setStartCamera(false)
     setCapturedImage(photo);
   };
-  const __cropPhoto = () => {};
+  const __savePhoto = () => {};
+
   const __retakePicture = () => {
     setCapturedImage(null);
     setPreviewVisible(false);
@@ -54,16 +54,6 @@ export default function App() {
     }
   };
 
-  const openCamera = () => {
-    ImagePicker.openCamera({
-      width: 300,
-      height: 400,
-      cropping: true,
-    })
-      .then((image) => {})
-      .finally(close);
-  };
-
   return (
     <View style={styles.container}>
       {startCamera ? (
@@ -71,7 +61,7 @@ export default function App() {
           {previewVisible && capturedImage ? (
             <CameraPreview
               photo={capturedImage}
-              savePhoto={__cropPhoto}
+              savePhoto={__savePhoto}
               retakePicture={__retakePicture}
             />
           ) : (
@@ -188,7 +178,7 @@ export default function App() {
           <View // FOOTER
             style={styles.footer}
           >
-            <TouchableOpacity onPress={openCamera} style={styles.startcam}>
+            <TouchableOpacity onPress={savePhoto} style={styles.startcam}>
               <Text
                 style={{
                   color: "white",
