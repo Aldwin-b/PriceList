@@ -11,7 +11,7 @@ import {
 import { Camera, Constants } from "expo-camera";
 import Header from "./components/Header";
 import ProduitScreen from "./components/ProduitScreen";
-import ProduitsList from "./components/ProduitList";
+import ImagePicker from "react-native-image-crop-picker";
 
 let camera: Camera;
 export default function App() {
@@ -19,11 +19,9 @@ export default function App() {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState<any>(null);
   var [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
-  const [flashMode, setFlashMode] = useState("off");
 
   const __startCamera = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
-    console.log(status);
     if (status === "granted") {
       setStartCamera(true);
     } else {
@@ -37,33 +35,33 @@ export default function App() {
 
   const __takePicture = async () => {
     const photo: any = await camera.takePictureAsync();
-    console.log(photo.height);
-
     setPreviewVisible(true);
     //setStartCamera(false)
     setCapturedImage(photo);
   };
-  const __savePhoto = () => {};
+  const __cropPhoto = () => {};
   const __retakePicture = () => {
     setCapturedImage(null);
     setPreviewVisible(false);
     __startCamera();
   };
-  const __handleFlashMode = () => {
-    if (flashMode === "on") {
-      setFlashMode("off");
-    } else if (flashMode === "off") {
-      setFlashMode("on");
-    } else {
-      setFlashMode("auto");
-    }
-  };
+
   const __switchCamera = () => {
     if (cameraType === Camera.Constants.Type.back) {
       setCameraType(Camera.Constants.Type.front);
     } else {
       setCameraType(Camera.Constants.Type.back);
     }
+  };
+
+  const openCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    })
+      .then((image) => {})
+      .finally(close);
   };
 
   return (
@@ -73,7 +71,7 @@ export default function App() {
           {previewVisible && capturedImage ? (
             <CameraPreview
               photo={capturedImage}
-              savePhoto={__savePhoto}
+              savePhoto={__cropPhoto}
               retakePicture={__retakePicture}
             />
           ) : (
@@ -190,7 +188,7 @@ export default function App() {
           <View // FOOTER
             style={styles.footer}
           >
-            <TouchableOpacity onPress={__startCamera} style={styles.startcam}>
+            <TouchableOpacity onPress={openCamera} style={styles.startcam}>
               <Text
                 style={{
                   color: "white",
@@ -222,9 +220,7 @@ const CameraPreview = ({ photo, retakePicture, savePhoto }: any) => {
     >
       <ImageBackground
         source={{ uri: photo && photo.uri }}
-        style={{
-          flex: 1,
-        }}
+        style={styles.justflex}
       >
         <View
           style={{
