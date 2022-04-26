@@ -11,7 +11,6 @@ Pour l'ouvrir il faut :
       - `set PATH=%PATH%;%APPDATA%\npm`
       - `npm install`
       - `npm install expo-camera`
-      - `npm install react-native-image-crop-picker` (Nécessaire, mais pas encore exploité)
 
   - Lancer la commande `npm start`
   - Scanner le code QR avec l'application Expo Go (disponible sur App Store & Play Store)
