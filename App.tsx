@@ -178,7 +178,7 @@ export default function App() {
           <View // FOOTER
             style={styles.footer}
           >
-            <TouchableOpacity onPress={savePhoto} style={styles.startcam}>
+            <TouchableOpacity onPress={__startCamera} style={styles.startcam}>
               <Text
                 style={{
                   color: "white",
@@ -198,7 +198,6 @@ export default function App() {
 // Photo Prise
 
 const CameraPreview = ({ photo, retakePicture, savePhoto }: any) => {
-  console.log(photo);
   return (
     <View
       style={{
