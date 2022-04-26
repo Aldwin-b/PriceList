@@ -12,7 +12,7 @@ import { Camera, Constants } from "expo-camera";
 import Header from "./components/Header";
 import ProduitScreen from "./components/ProduitScreen";
 
-let camera: Camera;
+let camera: any;
 export default function App() {
   const [startCamera, setStartCamera] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
